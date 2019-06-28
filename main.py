@@ -14,7 +14,7 @@ startPos = (width/8,height/2)
 clock = pygame.time.Clock()
 pipes = pygame.sprite.Group()
 player = Bird(startPos)
-gapSize = random.randint(80,200) #change to random
+gapSize = random.randint(80,200)
 loopCount = 0
 
 def lose():
@@ -34,16 +34,18 @@ def lose():
 def main():
     global loopCount
     while True:
+
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                sys.exit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
+                    player.speed[1] = -10
         if loopCount % 90 == 0:
             topPos = random.randint(0,height/2) - 400
             pipes.add(Pipe((width+100,topPos + gapSize +800)))
             pipes.add(Pipe((width+100,topPos),True))
-            for event in pygame.event.get():
-                if event.type == QUIT:
-                    sys.exit()
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_SPACE:
-                        player.speed[1] = -10
+
         player.update()
         pipes.update()
         get_hit = pygame.sprite.spritecollide(player,pipes,False)\
