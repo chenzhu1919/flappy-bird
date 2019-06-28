@@ -14,16 +14,23 @@ startPos = (width/8,height/2)
 clock = pygame.time.Clock()
 pipes = pygame.sprite.Group()
 player = Bird(startPos)
-gapSize = random.randint(80,200) #change to random
+
 loopCount = 0
 
 def lose():
     font = pygame.font.SysFont(None,70)
-    loseground = pygame.image.load("loseground.png")
-    loseground = pygame.transform.scale(loseground,(width,height))
+    text = font.render("you died",True,(0,0,255))
+    text_rect = text.get_rect()
+    text_rect.center = (width/2,height/2)
+    color = (225,225,225)
     while True:
+
+        screen.fill(color)
+        screen.blit(text,text_rect)
         pygame.display.flip()
         for event in pygame.event.get():
+            if event.type == QUIT:
+                sys.exit()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
                     pipes.empty()
@@ -37,14 +44,15 @@ def main():
         clock.tick(45)
         if loopCount % 90 == 0:
             topPos = random.randint(0,height/2) - 400
+            gapSize = random.randint(80, 200)  # change to random
             pipes.add(Pipe((width+100,topPos + gapSize +800)))
             pipes.add(Pipe((width+100,topPos),True))
-            for event in pygame.event.get():
-                if event.type == QUIT:
-                    sys.exit()
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_SPACE:
-                        player.speed[1] = -10
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                sys.exit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
+                    player.speed[1] = -10
         player.update()
         pipes.update()
         get_hit = pygame.sprite.spritecollide(player,pipes,False)\
@@ -56,5 +64,6 @@ def main():
         loopCount +=1
         if get_hit:
             lose()
+
 if __name__=="__main__":
     main()
