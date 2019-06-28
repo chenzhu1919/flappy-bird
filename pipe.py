@@ -3,8 +3,8 @@ import pygame,random
 class Pipe(pygame.sprite.Sprite):
     def __init__(self,pos,isTop=False):
         super().__init__()
-        self.image = pygame.image.load("pipe.png")
-        self.image = pygame.transform.smoothscale(self.image,(100,800))
+        self.image = pygame.image.load("pipe-green.png")
+        self.image = pygame.transform.scale(self.image,(100,800))
         if isTop:
             self.image = pygame.transform.rotate(self.image,-180)
         self.rect = self.image.get_rect()
